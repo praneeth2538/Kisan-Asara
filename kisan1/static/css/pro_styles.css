@@ -384,10 +384,11 @@ button:active,
    ========================================= */
 .dashboard-shell {
     max-width: 1200px;
-    margin: 28px auto 60px;
+    margin: 0 auto 60px;
     padding: 0 24px 40px;
     position: relative;
     z-index: 1;
+    isolation: isolate;
 }
 
 .dashboard-shell--tractor {
@@ -414,114 +415,143 @@ button:active,
     content: '';
     position: fixed;
     inset: 0;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(46, 125, 50, 0.12), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(11, 107, 87, 0.12), transparent 60%),
-        linear-gradient(180deg, rgba(232, 237, 233, 0.95), rgba(232, 237, 233, 0.8));
-    z-index: -2;
+    z-index: -1;
+    pointer-events: none;
+    background-color: #123b2b;
+    background-image:
+        linear-gradient(180deg, rgba(5, 45, 31, 0.67), rgba(6, 48, 32, 0.76)),
+        radial-gradient(ellipse at 86% 8%, rgba(245, 184, 46, 0.18), transparent 38%),
+        url('../kisan1/images/labor.jpg');
+    background-position: center;
+    background-size: cover;
 }
 
 .dashboard-shell::after {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-        linear-gradient(120deg, rgba(4, 110, 88, 0.06) 1px, transparent 1px),
-        linear-gradient(60deg, rgba(4, 110, 88, 0.04) 1px, transparent 1px);
-    background-size: 140px 140px;
-    opacity: 0.45;
     z-index: -1;
     pointer-events: none;
+    background:
+        radial-gradient(ellipse at 8% 92%, rgba(179, 207, 122, 0.1), transparent 26%),
+        linear-gradient(0deg, rgba(5, 34, 24, 0.18), transparent 48%);
 }
 
 .dashboard-topbar {
-    background: #0b6b57;
+    position: relative;
+    min-height: 118px;
+    padding: 66px 0 16px;
     color: #ffffff;
-    border-radius: 16px;
-    padding: 14px 18px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     display: grid;
-    grid-template-columns: 120px 1fr 120px;
-    align-items: center;
+    grid-template-columns: 1fr;
+    align-items: end;
     gap: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    box-shadow: none;
 }
 
 .dash-back {
-    justify-self: start;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.12));
+    position: absolute;
+    top: 16px;
+    left: 0;
+    z-index: 3;
+    background: rgba(6, 59, 42, 0.92);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 10px 16px;
-    border-radius: 999px;
+    border: 1px solid rgba(245, 243, 232, 0.28);
+    padding: 9px 14px;
+    border-radius: 11px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: transform var(--trans-fast), background var(--trans-fast);
+    text-decoration: none;
+    box-shadow: 0 5px 14px rgba(5, 29, 19, 0.25);
+    transition: transform var(--trans-fast), background var(--trans-fast), box-shadow var(--trans-fast);
 }
 
 .dash-back::before {
     content: '';
     width: 8px;
     height: 8px;
-    border-left: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
     transform: rotate(45deg);
     display: inline-block;
 }
 
 .dash-back:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.2));
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+    background: #075a3c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(5, 29, 19, 0.32);
 }
 
 .dash-title {
     text-align: center;
     text-transform: uppercase;
     font-weight: 800;
-    font-size: clamp(16px, 2.2vw, 22px);
-    letter-spacing: 0.6px;
+    font-size: clamp(21px, 3vw, 30px);
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-shadow: 0 2px 15px rgba(2, 25, 17, 0.45);
 }
 
 .dash-title span {
-    display: inline-block;
+    display: block;
+}
+
+.dash-title span + span {
+    margin-top: 5px;
+    color: rgba(245, 243, 232, 0.82);
+    font-size: 0.48em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
 }
 
 .dash-menu {
-    justify-self: end;
-    background: #f4f7f5;
-    color: #0b6b57;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 10px;
+    background: rgba(6, 59, 42, 0.92);
+    color: #ffffff;
+    border: 1px solid rgba(245, 243, 232, 0.28);
+    padding: 9px 14px;
+    border-radius: 11px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--trans-fast), box-shadow var(--trans-fast);
+    box-shadow: 0 5px 14px rgba(5, 29, 19, 0.25);
+    transition: transform var(--trans-fast), box-shadow var(--trans-fast), background var(--trans-fast);
 }
 
 .dash-menu::before {
     content: '';
     width: 14px;
     height: 2px;
-    background: #0b6b57;
-    box-shadow: 0 4px 0 #0b6b57, 0 -4px 0 #0b6b57;
+    background: currentColor;
+    box-shadow: 0 4px 0 currentColor, 0 -4px 0 currentColor;
     display: inline-block;
 }
 
 .dash-menu:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    background: #075a3c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(5, 29, 19, 0.32);
 }
 
-.dashboard-topbar .menu-container {
-    justify-self: end;
+.dashboard-topbar > .menu-container {
+    position: absolute;
+    top: 16px;
+    right: 0;
+    z-index: 3;
+}
+
+.tool-nav-actions .menu-container {
+    position: relative;
+    top: auto;
+    right: auto;
 }
 
 .dashboard-topbar .dropdown-content {
@@ -529,40 +559,46 @@ button:active,
 }
 
 .tool-nav-actions {
-    justify-self: end;
+    position: absolute;
+    top: 16px;
+    right: 0;
     display: flex;
     align-items: center;
     gap: 10px;
+    z-index: 3;
 }
 
 .dash-link {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.12));
+    background: rgba(6, 59, 42, 0.92);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 10px 16px;
-    border-radius: 10px;
+    border: 1px solid rgba(245, 243, 232, 0.28);
+    padding: 9px 14px;
+    border-radius: 11px;
     text-decoration: none;
     font-weight: 700;
+    box-shadow: 0 5px 14px rgba(5, 29, 19, 0.25);
     transition: transform var(--trans-fast), box-shadow var(--trans-fast), background var(--trans-fast);
 }
 
 .dash-link:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.2));
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    background: #075a3c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(5, 29, 19, 0.32);
 }
 
 .filter-card {
-    margin: 22px auto 26px;
-    padding: 16px 20px;
-    background: #f8faf8;
-    border: 1px solid #d3dfd9;
-    border-radius: 12px;
+    margin: 12px auto 22px;
+    padding: 14px 18px;
+    background: rgba(248, 248, 238, 0.91);
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 15px;
     display: flex;
     align-items: center;
     gap: 16px;
-    box-shadow: var(--shadow-sm);
-    max-width: 980px;
+    box-shadow: 0 9px 22px rgba(5, 29, 19, 0.18);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    max-width: none;
 }
 
 .filter-card label {
@@ -573,20 +609,31 @@ button:active,
 .filter-card select {
     width: 280px;
     max-width: 100%;
+    border-color: #d6dfd1;
+    background: rgba(255, 255, 255, 0.92);
 }
 
 .profile-card {
-    background: linear-gradient(120deg, #1d5f26 0%, #2e7d32 100%);
+    background: linear-gradient(115deg, rgba(6, 59, 42, 0.97), rgba(7, 90, 60, 0.91));
     color: #ffffff;
-    border-radius: 18px;
+    border: 1px solid rgba(234, 244, 223, 0.24);
+    border-radius: 20px;
     padding: 28px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 18px 30px rgba(14, 50, 25, 0.25);
+    box-shadow: 0 17px 34px rgba(3, 26, 17, 0.31);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform var(--trans-fast), box-shadow var(--trans-fast);
     position: relative;
     overflow: hidden;
+}
+
+.profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 38px rgba(3, 26, 17, 0.36);
 }
 
 .profile-card::before {
@@ -630,6 +677,7 @@ button:active,
     border-radius: 999px;
     font-size: 13px;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 .profile-status {
@@ -661,8 +709,9 @@ button:active,
     align-items: center;
     gap: 10px;
     margin: 24px 0 16px;
-    color: #1f2d2a;
+    color: #f5f3e8;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(2, 25, 17, 0.44);
 }
 
 .section-title .section-bar {
@@ -678,17 +727,18 @@ button:active,
 }
 
 .request-card {
-    background: #ffffff;
-    border: 1px solid #d3dfd9;
-    border-radius: 16px;
-    padding: 18px 20px;
-    box-shadow: var(--shadow-sm);
+    background: rgba(249, 249, 241, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 17px;
+    padding: 20px 22px;
+    box-shadow: 0 9px 24px rgba(5, 29, 19, 0.18);
+    overflow-wrap: anywhere;
     transition: transform var(--trans-fast), box-shadow var(--trans-fast);
 }
 
 .request-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(5, 29, 19, 0.26);
 }
 
 .request-header {
@@ -766,12 +816,13 @@ button:active,
 }
 
 .empty-card {
-    background: #ffffff;
-    border: 2px dashed #c9d2cb;
-    border-radius: 18px;
-    padding: 50px 24px;
+    background: rgba(249, 249, 241, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 17px;
+    padding: 38px 24px;
     text-align: center;
-    color: #6b7a70;
+    color: #354d3f;
+    box-shadow: 0 9px 24px rgba(5, 29, 19, 0.18);
 }
 
 .empty-card .empty-icon {
@@ -780,6 +831,19 @@ button:active,
     border-radius: 14px;
     background: rgba(46, 125, 50, 0.1);
     margin: 0 auto 16px;
+    position: relative;
+}
+
+.empty-card .empty-icon::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 21px;
+    left: 17px;
+    top: 12px;
+    background: #2e7d32;
+    border-radius: 2px 100% 2px 100%;
+    transform: rotate(-28deg);
 }
 
 .empty-card .empty-sub {
@@ -790,11 +854,11 @@ button:active,
 .settings-panel,
 .inventory-panel {
     margin-top: 26px;
-    background: #ffffff;
-    border: 1px solid #d3dfd9;
-    border-radius: 16px;
+    background: rgba(249, 249, 241, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 17px;
     padding: 22px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 9px 24px rgba(5, 29, 19, 0.18);
     display: none;
 }
 
@@ -1165,48 +1229,129 @@ button:active,
 
 @media (max-width: 768px) {
     .dashboard-topbar {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        min-height: 106px;
+        padding: 62px 0 14px;
+    }
+
+    .dashboard-shell {
+        padding: 0 16px 32px;
+    }
+
+    .dash-title {
+        font-size: clamp(20px, 5vw, 27px);
+    }
+
+    .tool-nav-actions {
+        top: 12px;
+        gap: 7px;
     }
 
     .dash-back,
     .dash-menu,
-    .tool-nav-actions {
-        justify-self: center;
+    .dash-link {
+        min-height: 40px;
+        box-sizing: border-box;
+        padding: 8px 11px;
+        font-size: 13px;
     }
 
-    .dash-title {
-        order: -1;
+    .dashboard-topbar > .menu-container {
+        top: 12px;
     }
 
-    .tool-nav-actions {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .tool-nav-actions .menu-container,
-    .tool-nav-actions .dash-link {
-        width: 100%;
-    }
-
-    .tool-nav-actions .dash-menu,
-    .tool-nav-actions .dash-link {
-        justify-content: center;
-        text-align: center;
+    .dashboard-topbar .dropdown-content {
+        right: 0;
+        min-width: min(220px, calc(100vw - 32px));
     }
 
     .filter-card {
         flex-direction: column;
         align-items: flex-start;
+        gap: 8px;
+    }
+
+    .filter-card select {
+        width: 100%;
     }
 
     .profile-card {
-        flex-direction: column;
+        padding: 24px 20px;
+    }
+
+    .profile-status {
+        flex-shrink: 0;
+    }
+
+    .profile-card::after {
+        right: 6px;
+        width: 128px;
+        opacity: 0.1;
+    }
+
+    .request-actions {
+        flex-wrap: wrap;
+    }
+
+    .request-actions form,
+    .request-actions .action-btn {
+        flex: 1 1 auto;
+    }
+
+    .request-actions .action-btn {
+        width: 100%;
+    }
+
+    .add-product-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 420px) {
+    .dashboard-shell {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .dashboard-topbar {
+        min-height: 100px;
+    }
+
+    .dash-back,
+    .dash-menu,
+    .dash-link {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+
+    .tool-nav-actions {
+        gap: 5px;
+    }
+
+    .profile-card {
         align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
     }
 
     .profile-status {
         text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-shell,
+    .dash-back,
+    .dash-menu,
+    .dash-link,
+    .profile-card,
+    .request-card {
+        animation: none;
+        transition: none;
+    }
+
+    .profile-card:hover,
+    .request-card:hover {
+        transform: none;
     }
 }
 

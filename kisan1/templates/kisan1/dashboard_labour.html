@@ -10,8 +10,8 @@
         </a>
 
         <div class="dash-title">
-            <span>{{ user.name|upper }}&#39;S {% trans "Dashboard" %}</span>
-            <span>({% trans "Role" %}: {{ role|upper }})</span>
+            <span>{{ role|title }} {% trans "Dashboard" %}</span>
+            <span>{{ user.name|upper }}</span>
         </div>
 
         <div class="menu-container">

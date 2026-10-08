@@ -16,39 +16,101 @@
         --dark-bg: #010a02;
     }
 
-    /* Premium Animated Background Overlay */
+    /* Full-page agricultural backdrop; gradients remain if the image is unavailable. */
     .premium-dashboard-bg {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1;
-        background: linear-gradient(135deg, #010a02, #063d14, #011406, #042409);
-        background-size: 300% 300%;
-        animation: gradientMove 15s ease infinite;
-    }
-
-    @keyframes gradientMove {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        background-color: #173d2a;
+        background-image:
+            linear-gradient(180deg, rgba(10, 43, 27, 0.58), rgba(10, 43, 27, 0.72)),
+            linear-gradient(90deg, rgba(12, 48, 30, 0.24), rgba(12, 48, 30, 0.06)),
+            url('{% static "kisan1/images/labor.jpg" %}');
+        background-position: center;
+        background-size: cover;
     }
 
     .portal-container {
+        position: relative;
+        z-index: 1;
         max-width: 1300px;
         margin: 0 auto;
         padding: 20px;
         font-family: 'Inter', sans-serif;
         animation: fadeIn 0.8s ease-out;
+    }
+
+    .portal-container .dash-nav {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        min-height: 86px;
+        box-sizing: border-box;
+        padding: 48px 0 14px;
+        margin-bottom: 18px;
+        color: #fff;
+        background: transparent !important;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none !important;
+    }
+
+    .portal-container .dash-nav h3 {
+        color: #fff;
+        font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+        line-height: 1.2;
+        text-align: center;
+        text-shadow: 0 2px 12px rgba(2, 25, 17, 0.48);
+    }
+
+    .portal-container .dash-nav h3 span {
+        display: block;
+        margin-top: 6px;
+        color: rgba(245, 243, 232, 0.82);
+        font-size: 0.58em;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+    }
+
+    .portal-container .dash-nav .back-btn {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        min-height: 40px;
+        padding: 8px 13px !important;
+        color: #fff !important;
+        background: rgba(6, 59, 42, 0.92) !important;
+        border: 1px solid rgba(245, 243, 232, 0.28) !important;
+        border-radius: 11px !important;
+        box-shadow: 0 5px 14px rgba(5, 29, 19, 0.25);
+    }
+
+    .portal-container .dash-nav .menu-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 3;
+    }
+
+    .portal-container .dash-nav .menu-btn {
+        min-height: 40px;
+        padding: 8px 13px !important;
+        color: #fff !important;
+        background: rgba(6, 59, 42, 0.92) !important;
+        border: 1px solid rgba(245, 243, 232, 0.28);
+        border-radius: 11px !important;
+        box-shadow: 0 5px 14px rgba(5, 29, 19, 0.25);
+    }
+
+    .portal-container .dash-nav .back-btn:hover,
+    .portal-container .dash-nav .menu-btn:hover {
+        background: #075a3c !important;
+        transform: translateY(-2px);
     }
 
     @keyframes fadeIn {
@@ -90,16 +152,16 @@
 
     /* Welcome Header - Glassmorphism */
     .welcome-header {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
+        background: rgba(248, 248, 238, 0.88);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        color: #173f2b;
         padding: 40px;
         border-radius: 30px;
         margin-bottom: 30px;
         text-align: center;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 16px 38px rgba(5, 29, 19, 0.24);
         position: relative;
         overflow: hidden;
     }
@@ -108,6 +170,24 @@
         font-size: clamp(28px, 4vw, 42px);
         font-weight: 800;
         margin: 0;
+        color: #063b2a;
+    }
+
+    .welcome-header h1::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 19px;
+        margin-right: 11px;
+        vertical-align: 0.06em;
+        background: #75a94a;
+        border-radius: 2px 100% 2px 100%;
+        transform: rotate(-24deg);
+    }
+
+    .welcome-header p {
+        margin-bottom: 0;
+        color: #526a5b;
     }
 
     /* Section Titles */
@@ -119,8 +199,8 @@
         font-weight: 800;
         margin-top: 50px;
         margin-bottom: 30px;
-        color: #ffffff;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        color: #f5f3e8;
+        text-shadow: 0 2px 12px rgba(2, 25, 17, 0.44);
     }
 
     /* Grid & Cards */
@@ -131,21 +211,51 @@
     }
 
     .item-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
+        background: rgba(249, 249, 241, 0.96);
+        backdrop-filter: blur(10px);
         border-radius: 28px;
         padding: 30px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        transition: transform 180ms ease, box-shadow 180ms ease;
+        border: 1px solid rgba(255, 255, 255, 0.68);
+        box-shadow: 0 12px 28px rgba(5, 29, 19, 0.2);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
     .item-card:hover {
-        transform: translateY(-12px) scale(1.02);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        transform: translateY(-4px);
+        box-shadow: 0 17px 34px rgba(5, 29, 19, 0.28);
+    }
+
+    .item-card h4 {
+        color: #24372d !important;
+    }
+
+    .item-card p {
+        color: #53665a;
+    }
+
+    .empty-msg {
+        grid-column: 1 / -1;
+        padding: 26px 24px;
+        color: #354d3f;
+        background: rgba(249, 249, 241, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.68);
+        border-radius: 18px;
+        box-shadow: 0 12px 28px rgba(5, 29, 19, 0.2);
+    }
+
+    .empty-msg::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 18px;
+        margin-right: 10px;
+        vertical-align: -2px;
+        background: #75a94a;
+        border-radius: 2px 100% 2px 100%;
+        transform: rotate(-24deg);
     }
 
     .price-tag {
@@ -190,15 +300,86 @@
 
     /* Filter Bar Overrides */
     .filter-bar {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+        background: rgba(248, 248, 238, 0.91);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
         padding: 15px 25px;
         border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.58);
         margin-bottom: 30px;
         display: flex;
         align-items: center;
         gap: 15px;
+        box-shadow: 0 9px 22px rgba(5, 29, 19, 0.18);
+    }
+
+    .filter-bar label {
+        color: #123e2b !important;
+    }
+
+    .filter-bar select {
+        border: 1px solid #d6dfd1 !important;
+        border-radius: 10px !important;
+    }
+
+    @media (max-width: 640px) {
+        .portal-container {
+            padding: 14px 14px 100px;
+        }
+
+        .portal-container .dash-nav {
+            min-height: 96px;
+            padding: 51px 0 14px;
+        }
+
+        .portal-container .dash-nav h3 {
+            max-width: 100%;
+            font-size: 1.05rem;
+            overflow-wrap: anywhere;
+        }
+
+        .welcome-header {
+            padding: 30px 20px;
+            border-radius: 21px;
+        }
+
+        .filter-bar {
+            align-items: stretch;
+            padding: 15px 17px;
+        }
+
+        .filter-bar label,
+        .filter-bar select {
+            width: 100%;
+        }
+
+        .grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 15px;
+        }
+
+        .my-requests-btn {
+            right: 14px;
+            bottom: 14px;
+            left: 14px;
+            justify-content: center;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .portal-container,
+        .item-card,
+        .btn,
+        .my-requests-btn {
+            animation: none;
+            transition: none;
+        }
+
+        .item-card:hover,
+        .btn:hover,
+        .my-requests-btn:hover {
+            transform: none;
+        }
     }
 </style>
 
@@ -210,22 +391,19 @@
 
 <div class="portal-container">
 
-    <div class="dash-nav"
-        style="background: var(--primary-color); color: white; border-radius: 16px; padding: 18px 24px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md);">
-        <button onclick="history.back()" class="back-btn"
-            style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+    <div class="dash-nav">
+        <button onclick="history.back()" class="back-btn">
             {% trans "Back" %}</button>
 
         <h3 style="margin: 0; text-transform: uppercase; font-weight: 800;">
-            {{ farmer.name }}&#39;S {% trans "Dashboard" %}
-            <span style="font-size: 0.7em; opacity: 0.9; font-weight: 400; margin-left: 10px;">
-                ({% trans "Role" %}: {% trans "Farmer" %})
+            {% trans "Farmer Dashboard" %}
+            <span>
+                {{ farmer.name }}
             </span>
         </h3>
 
         <div class="menu-container">
-            <button class="menu-btn"
-                style="background: white; color: var(--primary-color); border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer;">{% trans "Menu" %}</button>
+            <button class="menu-btn">{% trans "Menu" %}</button>
             <div class="dropdown-content">
                 <a href="{% url 'register_choice' %}">{% trans "Select Your Role" %}</a>
                 <a href="{% url 'farmer_booking' %}">{% trans "Track My Bookings" %}</a>

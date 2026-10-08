@@ -30,7 +30,6 @@ PINCODE_DATA = {
             "508207": { "district": "Nalgonda", "mandal": "Miryalaguda", "villages": ["Miryalaguda", "Damaracherla", "Vemulapalle"] },
             "509210": { "district": "Narayanpet", "mandal": "Narayanpet", "villages": ["Narayanpet Town", "Damaragidda", "Dhanwada"] },
             "504106": { "district": "Nirmal", "mandal": "Nirmal", "villages": ["Nirmal Town", "Soan", "Dilawarpur"] },
-            "503001": { "district": "Nizamabad", "mandal": "Nizamabad North", "villages": ["Nizamabad City", "Kanteshwar", "Arsapally"] },
             "503224": { "district": "Nizamabad", "mandal": "Armoor", "villages": ["Armoor Town", "Perkit", "Ankarpur", "Mamidi Palli", "Issapalle", "Pipri"] },
             "503219": { "district": "Nizamabad", "mandal": "Balkonda", "villages": ["Balkonda Village", "Mendora", "Srirampur", "Mupkal"] },
             "505172": { "district": "Peddapalli", "mandal": "Peddapalli", "villages": ["Peddapalli Town", "Odela", "Sulthanabad"] },
@@ -50,7 +49,23 @@ PINCODE_DATA = {
             "502331": { "district": "Sangareddy", "mandal": "Jinnaram", "villages": ["Jinnaram", "Nallavalli", "Kistapur"] },
             "502286": { "district": "Sangareddy", "mandal": "Andole", "villages": ["Andole", "Mansanpally", "Mallepalli"] },
             "502316": { "district": "Sangareddy", "mandal": "Patancheru", "villages": ["Patancheru", "Ameenpur", "Rudraram"] },
-            "503001": { "district": "Nizamabad", "mandal": "Nizamabad Rural", "villages": ["Nizamabad Rural", "Yedpalle", "Dichpally"] },
+            "503001": {
+                "district": "Nizamabad",
+                "mandal": "Nizamabad Rural",
+                "villages": ["Nizamabad Rural", "Yedpalle", "Dichpally"],
+                "locations": [
+                    {
+                        "district": "Nizamabad",
+                        "mandal": "Nizamabad North",
+                        "villages": ["Nizamabad City", "Kanteshwar", "Arsapally"],
+                    },
+                    {
+                        "district": "Nizamabad",
+                        "mandal": "Nizamabad Rural",
+                        "villages": ["Nizamabad Rural", "Yedpalle", "Dichpally"],
+                    },
+                ],
+            },
             "503002": { "district": "Nizamabad", "mandal": "Nizamabad South", "villages": ["Nizamabad Rural", "Malkapur", "Yellammakunta"] },
             "503202": { "district": "Nizamabad", "mandal": "Yedapally", "villages": ["Thanekalan", "Bapu Nagar", "Mallepahad","Dharmaram"] },
             "503307": { "district": "Nizamabad", "mandal": "velpoor", "villages": ["pachala Nadukuda", "Bhimgal", "Pipri"] },

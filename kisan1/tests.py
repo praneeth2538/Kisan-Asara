@@ -32,6 +32,7 @@ from .models import (
     TractorProfile,
     UserRegistration,
 )
+from .pincode_data import PINCODE_DATA, is_hidden_pincode
 
 class KisanAsaraTests(TestCase):
     def setUp(self):
@@ -378,15 +379,61 @@ class KisanAsaraTests(TestCase):
 
     def test_location_api_returns_data(self):
         PincodeMapping.objects.create(
-            pincode='503001',
+            pincode='612345',
             district='Nizamabad',
             mandal='Armoor',
             village='Perkit',
         )
-        response = self.client.get(reverse('get_location_api'), {'pincode': '503001'})
+        response = self.client.get(reverse('get_location_api'), {'pincode': '612345'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json().get('success'), True)
         self.assertIn('Perkit', response.json().get('villages', []))
+
+    def test_location_api_uses_complete_bundled_data_and_normalizes_input(self):
+        load_telangana_pincodes(force=True)
+        for pincode, data in PINCODE_DATA.items():
+            if is_hidden_pincode(pincode):
+                continue
+
+            response = self.client.get(
+                reverse('get_location_api'),
+                {'pincode': f' {pincode} '},
+            )
+            self.assertEqual(response.status_code, 200, msg=f'Expected success for {pincode}')
+            payload = response.json()
+            self.assertTrue(payload['success'], msg=f'Expected success for {pincode}')
+            self.assertEqual(payload['state'], 'Telangana')
+
+            locations = data.get('locations') or [data]
+            expected_villages = list(dict.fromkeys(
+                village.strip()
+                for location in locations
+                for village in location.get('villages', [])
+                if village.strip()
+            ))
+            self.assertEqual(payload['villages'], expected_villages)
+
+        payload = self.client.get(
+            reverse('get_location_api'),
+            {'pincode': '503001'},
+        ).json()
+        self.assertEqual(payload['village_locations']['Nizamabad City']['mandal'], 'Nizamabad North')
+        self.assertEqual(payload['village_locations']['Yedpalle']['mandal'], 'Nizamabad Rural')
+
+    def test_location_api_reports_invalid_and_unknown_pincodes(self):
+        invalid_response = self.client.get(
+            reverse('get_location_api'),
+            {'pincode': '12 34'},
+        )
+        self.assertEqual(invalid_response.status_code, 400)
+        self.assertEqual(invalid_response.json()['error'], 'Invalid pincode')
+
+        missing_response = self.client.get(
+            reverse('get_location_api'),
+            {'pincode': '123456'},
+        )
+        self.assertEqual(missing_response.status_code, 404)
+        self.assertEqual(missing_response.json()['error'], 'Pincode not found')
 
     def test_admin_analytics_page_for_staff(self):
         User = get_user_model()
@@ -425,12 +472,12 @@ class KisanAsaraTests(TestCase):
 
     def test_location_village_endpoint(self):
         PincodeMapping.objects.create(
-            pincode='503002',
+            pincode='612346',
             district='Nizamabad',
             mandal='Armoor',
             village='VillageOne',
         )
-        response = self.client.get(reverse('get_villages'), {'pincode': '503002'})
+        response = self.client.get(reverse('get_villages'), {'pincode': '612346'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'villages': ['VillageOne']})
 
@@ -688,6 +735,19 @@ class KisanAsaraTests(TestCase):
         from .location_service import load_telangana_pincodes
         load_telangana_pincodes(force=True)
         self.assertFalse(PincodeMapping.objects.filter(pincode='503111').exists())
+        expected_pincodes = {
+            pincode for pincode in PINCODE_DATA
+            if not is_hidden_pincode(pincode)
+        }
+        loaded_pincodes = set(
+            PincodeMapping.objects.values_list('pincode', flat=True).distinct()
+        )
+        self.assertTrue(expected_pincodes.issubset(loaded_pincodes))
+        self.assertTrue(PincodeMapping.objects.filter(
+            pincode='503001',
+            mandal='Nizamabad North',
+            village='Nizamabad City',
+        ).exists())
 
     def test_pincode_mapping_model_blocks_hidden_pincode(self):
         with self.assertRaises(ValidationError):
@@ -727,7 +787,9 @@ class KisanAsaraTests(TestCase):
 
     def test_new_service_pincodes_are_available(self):
         load_telangana_pincodes(force=True)
-        for pincode in ['503224', '503306', '502316', '502331', '502286', '503001', '503002']:
+        for pincode in PINCODE_DATA:
+            if is_hidden_pincode(pincode):
+                continue
             response = self.client.get(reverse('get_location_api'), {'pincode': pincode})
             self.assertEqual(response.status_code, 200)
             payload = response.json()

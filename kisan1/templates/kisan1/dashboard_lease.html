@@ -5,8 +5,8 @@
     <div class="dashboard-topbar">
         <button class="dash-back" onclick="window.location.href=`{% url 'welcome' %}`">{% trans "Back" %}</button>
         <div class="dash-title">
-            <span>{{ user.name|upper }}&#39;S {% trans "Dashboard" %}</span>
-            <span>({% trans "Role" %}: {{ role|upper }})</span>
+            <span>{{ role|title }} {% trans "Dashboard" %}</span>
+            <span>{{ user.name|upper }}</span>
         </div>
         <div class="menu-container">
             <button class="dash-menu">{% trans "Menu" %}</button>
@@ -91,8 +91,7 @@
             {% csrf_token %}
             <label for="serviceRate">{% trans "Change Rate" %}</label>
             <input id="serviceRate" type="number" min="0" max="100000" name="rate" value="{{ current_rate }}" required>
-            <label><input type="checkbox" name="is_available" {% if is_available %}checked{% endif %}> {% trans "Update
-                Availability" %}</label>
+            <label><input type="checkbox" name="is_available" {% if is_available %}checked{% endif %}> {% trans "Update Availability" %}</label>
             <label for="serviceStatus">{% trans "Service Status" %}</label>
             <select id="serviceStatus" name="service_status">
                 <option value="Active" {% if service_status == 'Active' %}selected{% endif %}>{% trans "Active" %}

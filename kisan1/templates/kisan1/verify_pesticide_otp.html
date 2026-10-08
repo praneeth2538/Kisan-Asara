@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+{% load i18n %}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -135,7 +136,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{% url 'verify_pesticide_otp' %}">
+        <form method="POST" action="{% url 'verify_otp' %}">
             {% csrf_token %}
             <input type="text" name="otp" maxlength="4" placeholder="{% trans '0000' %}" inputmode="numeric" required>
             <button type="submit" class="btn-verify">Verify & Register</button>
@@ -181,5 +182,3 @@
 </body>
 
 </html>
-
-

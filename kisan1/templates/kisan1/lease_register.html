@@ -272,7 +272,7 @@
             <div class="form-group">
                 <label>{% trans "Pincode (Try: 503224, 506002, 500038):" %}</label>
                 <input type="text" id="pincode" name="pincode" placeholder="{% trans 'Enter 6-digit Pincode' %}"
-                    minlength="6" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" oninput="fetchLocationDetails()"
+                    minlength="6" inputmode="numeric" pattern="[0-9]{6}" oninput="fetchLocationDetails()"
                     required>
             </div>
 
@@ -354,8 +354,7 @@
                     style="text-transform: uppercase;"
                     title="{% trans 'Passbook must start with 1 capital letter followed by exactly 11 numbers.' %}"
                     oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);" required>
-                <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">* {% trans "Strictly 12
-                    characters: 1 Capital alphabet & remaining 11 Numbers" %}</small>
+                <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">* {% trans "Strictly 12 characters: 1 Capital alphabet & remaining 11 Numbers" %}</small>
             </div>
 
             <button type="submit" class="btn-next">{% trans "Register" %}</button>
