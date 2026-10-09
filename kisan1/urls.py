@@ -23,6 +23,10 @@ urlpatterns = [
 
     # Dashboards & Main Pages
     path('main-home/', views.main_home, name='main_home'),
+    path('ai/', views.ai_dashboard, name='ai_dashboard'),
+    path('ai/disease-detection/', views.crop_disease_detection, name='crop_disease_detection'),
+    path('ai/chatbot/', views.ai_chatbot, name='ai_chatbot'),
+    path('ai/price-prediction/', views.crop_price_prediction, name='crop_price_prediction'),
     path('dashboard/<str:role>/', views.dashboard, name='dashboard'),
     path('dashboard/<str:role>/service-settings/', views.update_service_settings, name='update_service_settings'),
     path('dashboard/tools/add-products/', views.tool_add_products, name='tool_add_products'),

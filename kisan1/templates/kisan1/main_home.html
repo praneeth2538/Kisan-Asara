@@ -430,6 +430,33 @@
         </select>
     </div>
 
+    <div id="ai-sec" class="service-section">
+        <h3 class="section-title">{% trans "AI Farming Tools" %}</h3>
+        <div class="grid">
+            <div class="item-card" style="border-top: 6px solid #1e7f57;">
+                <div>
+                    <h4 style="color: #111;">{% trans "Disease Detection" %}</h4>
+                    <p>{% trans "Check crop leaf images for visible signs of stress or disease." %}</p>
+                </div>
+                <a href="{% url 'crop_disease_detection' %}" class="btn btn-pesticide">{% trans "Open AI Checker" %}</a>
+            </div>
+            <div class="item-card" style="border-top: 6px solid #0f7a56;">
+                <div>
+                    <h4 style="color: #111;">{% trans "Farming Chatbot" %}</h4>
+                    <p>{% trans "Ask irrigation, crop, soil, and pest questions in plain language." %}</p>
+                </div>
+                <a href="{% url 'ai_chatbot' %}" class="btn btn-labor">{% trans "Ask Assistant" %}</a>
+            </div>
+            <div class="item-card" style="border-top: 6px solid #7a4f2c;">
+                <div>
+                    <h4 style="color: #111;">{% trans "Price Forecast" %}</h4>
+                    <p>{% trans "View history and a trend-based estimate for crop prices in your market." %}</p>
+                </div>
+                <a href="{% url 'crop_price_prediction' %}" class="btn btn-tractor">{% trans "Forecast Prices" %}</a>
+            </div>
+        </div>
+    </div>
+
     <div id="labor-sec" class="service-section">
         <h3 class="section-title">{% trans "Available Laborers" %}</h3>
         <div class="grid">

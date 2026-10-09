@@ -1,0 +1,91 @@
+{% extends 'kisan1/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Crop Price Prediction" %}{% endblock %}
+
+{% block content %}
+<style>
+    body { background: linear-gradient(180deg, #edf7ea 0%, #f7f5eb 100%); font-family: 'Poppins', sans-serif; }
+    .page { max-width: 980px; margin: 40px auto; padding: 24px; }
+    .panel { background: rgba(255,255,255,0.88); border-radius: 22px; padding: 28px; box-shadow: 0 12px 30px rgba(17,71,52,0.08); }
+    .panel h1 { margin-top: 0; color: #123d2b; }
+    .meta { color: #596f62; margin-bottom: 22px; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-items: end; }
+    select, button { padding: 12px; border-radius: 12px; border: 1px solid #dce5df; background: #f8faf7; }
+    button { background: linear-gradient(135deg,#1e7f57,#174b38); color: #fff; border: none; font-weight: 800; cursor: pointer; }
+    .result-box { margin-top: 28px; padding: 20px; border-radius: 16px; background: #f5faf5; border: 1px solid #dfeedd; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 12px; }
+    .stat { background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #e2ebdf; }
+    .stat strong { display: block; color: #1f4b38; margin-bottom: 6px; }
+    .list { margin-top: 14px; }
+    .list ul { margin: 10px 0 0 0; padding-left: 20px; }
+    .nav { margin-bottom: 18px; }
+    .nav a { text-decoration: none; color: #184f36; font-weight: 700; }
+    @media (max-width: 640px) { .page { padding: 12px; } .panel { padding: 18px; } .controls { grid-template-columns: 1fr; } }
+</style>
+
+<div class="page">
+    <div class="nav"><a href="{% url 'ai_dashboard' %}">← {% trans "AI Dashboard" %}</a></div>
+    <div class="panel">
+        <h1>{% trans "Crop Price Prediction" %}</h1>
+        <div class="meta">{% trans "Select a crop and market to view historical prices and a simple trend-based estimate. This is a baseline forecast and not a guaranteed market outcome." %}</div>
+
+        <form method="post" class="controls">
+            {% csrf_token %}
+            <div>
+                <label for="crop">{% trans "Crop" %}</label>
+                <select id="crop" name="crop" required>
+                    {% for crop in crops %}
+                    <option value="{{ crop }}">{{ crop }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="market">{% trans "Market" %}</label>
+                <select id="market" name="market" required>
+                    {% for market in markets %}
+                    <option value="{{ market }}">{{ market }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">{% trans "Forecast" %}</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+            {% if result.status == 'success' %}
+                <h3>{% trans "Forecast results" %}</h3>
+                <div class="row">
+                    <div class="stat"><strong>{% trans "Crop" %}</strong>{{ result.crop }}</div>
+                    <div class="stat"><strong>{% trans "Market" %}</strong>{{ result.market }}</div>
+                    <div class="stat"><strong>{% trans "Last updated" %}</strong>{{ result.last_updated }}</div>
+                    <div class="stat"><strong>{% trans "Horizon" %}</strong>{{ result.forecast_horizon_days }} {% trans "days" %}</div>
+                </div>
+                <div class="list">
+                    <h4>{% trans "Historical prices" %}</h4>
+                    <ul>
+                        {% for item in result.historical_prices %}
+                        <li>{{ item.date }}: ₹{{ item.price }}</li>
+                        {% empty %}
+                        <li>{% trans "No historical data available." %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="list">
+                    <h4>{% trans "Forecast" %}</h4>
+                    <ul>
+                        {% for forecast in result.forecast %}
+                        <li>{{ forecast.date }}: ₹{{ forecast.price }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <p><strong>{% trans "Uncertainty" %}:</strong> {{ result.uncertainty }}</p>
+            {% else %}
+                <h3>{% trans "Forecast unavailable" %}</h3>
+                <p>{{ result.message }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

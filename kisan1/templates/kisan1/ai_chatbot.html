@@ -1,0 +1,59 @@
+{% extends 'kisan1/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "AI Farming Chatbot" %}{% endblock %}
+
+{% block content %}
+<style>
+    body { background: linear-gradient(180deg, #edf7ea 0%, #f7f5eb 100%); font-family: 'Poppins', sans-serif; }
+    .page { max-width: 1000px; margin: 40px auto; padding: 24px; }
+    .panel { background: rgba(255,255,255,0.88); border-radius: 22px; padding: 28px; box-shadow: 0 12px 30px rgba(17,71,52,0.08); }
+    .panel h1 { margin-top: 0; color: #123d2b; }
+    .meta { color: #5b6d5f; margin-bottom: 24px; }
+    .chat-window { background: #f8faf8; border: 1px solid #dfe9df; border-radius: 18px; padding: 16px; min-height: 220px; max-height: 400px; overflow-y: auto; }
+    .msg { margin: 10px 0; padding: 12px 14px; border-radius: 12px; max-width: 85%; line-height: 1.6; }
+    .user { margin-left: auto; background: #dff5e9; color: #183a2d; }
+    .assistant { background: #edf5dd; color: #2d4228; }
+    form { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-top: 20px; }
+    textarea { width: 100%; min-height: 90px; resize: vertical; padding: 12px; border: 1px solid #dfe5df; border-radius: 12px; } 
+    button { border: none; background: linear-gradient(135deg,#1e7f57,#174b38); color: #fff; padding: 14px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+    .status { margin-top: 12px; color: #486253; }
+    .nav { margin-bottom: 18px; }
+    .nav a { text-decoration: none; color: #184f36; font-weight: 700; }
+    @media (max-width: 640px) { .page { padding: 12px; } .panel { padding: 18px; } form { grid-template-columns: 1fr; } }
+</style>
+
+<div class="page">
+    <div class="nav"><a href="{% url 'ai_dashboard' %}">← {% trans "AI Dashboard" %}</a></div>
+    <div class="panel">
+        <h1>{% trans "AI Farming Chatbot" %}</h1>
+        <div class="meta">{% trans "Ask practical agriculture questions about crops, irrigation, disease prevention, fertilizer safety, and farm planning." %}</div>
+
+        <div class="chat-window">
+            {% if conversation %}
+                {% for item in conversation %}
+                    <div class="msg {% if item.role == 'user' %}user{% else %}assistant{% endif %}">
+                        {{ item.content }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="msg assistant">{% trans "Ask a farming question. The assistant will answer using the configured provider when available." %}</div>
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="question" placeholder="{% trans 'Example: How can I improve water use in my paddy field during summer?' %}" required></textarea>
+            <button type="submit">{% trans "Send" %}</button>
+        </form>
+
+        {% if answer %}
+        <div class="status">
+            {% if answer.status == 'success' %}<strong>{% trans "Reply" %}:</strong> {{ answer.answer }}{% endif %}
+            {% if answer.status == 'unconfigured' %}<strong>{% trans "Status" %}:</strong> {{ answer.answer }}{% endif %}
+            {% if answer.status == 'error' %}<strong>{% trans "Status" %}:</strong> {{ answer.answer }}{% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

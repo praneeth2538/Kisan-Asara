@@ -1,0 +1,61 @@
+{% extends 'kisan1/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "AI Farming Tools" %}{% endblock %}
+
+{% block content %}
+<style>
+    body { background: linear-gradient(180deg, #edf7ea 0%, #f7f5eb 100%); font-family: 'Poppins', sans-serif; }
+    .ai-shell { max-width: 1200px; margin: 40px auto; padding: 24px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 24px; }
+    .title-block { background: rgba(255,255,255,0.8); border-radius: 22px; padding: 28px; box-shadow: 0 12px 28px rgba(18, 74, 49, 0.12); }
+    .title-block h1 { margin: 0 0 10px; color: #123d2b; }
+    .title-block p { margin: 0; color: #536b5d; }
+    .nav-btn { text-decoration: none; background: #184f36; color: #fff; padding: 12px 18px; border-radius: 12px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 22px; margin-top: 28px; }
+    .card { background: rgba(255,255,255,0.88); border-radius: 24px; padding: 24px; box-shadow: 0 12px 32px rgba(17,71,52,0.08); border: 1px solid rgba(24,79,54,0.08); }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #eaf7ee; color: #0e5a3d; margin-bottom: 16px; }
+    .card h3 { margin-top: 0; color: #173f2b; }
+    .card p { color: #51695d; line-height: 1.65; }
+    .card a { display: inline-block; margin-top: 12px; text-decoration: none; background: linear-gradient(135deg,#1e7f57,#174b38); color: #fff; border-radius: 12px; padding: 12px 18px; font-weight: 700; }
+    .small-note { margin-top: 24px; background: rgba(247, 249, 243, 0.9); border-left: 5px solid #7fbf3f; padding: 14px 16px; border-radius: 12px; color: #314e3d; }
+    @media (max-width: 640px) { .topbar { flex-direction: column; align-items: stretch; } .ai-shell { padding: 12px; } }
+</style>
+
+<div class="ai-shell">
+    <div class="topbar">
+        <div class="title-block">
+            <h1>{% trans "AI Farming Assistant" %}</h1>
+            <p>{% trans "Practical tools for crop health, farm questions, and market intelligence." %}</p>
+        </div>
+        <a class="nav-btn" href="{% url 'main_home' %}">{% trans "Back to Dashboard" %}</a>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <span class="pill">{% trans "Crop health" %}</span>
+            <h3>{% trans "AI Crop Disease Detection" %}</h3>
+            <p>{% trans "Upload a plant or leaf image to check for common disease symptoms. This helps farmers identify visible problems and take safer next steps." %}</p>
+            <a href="{% url 'crop_disease_detection' %}">{% trans "Open disease checker" %}</a>
+        </div>
+
+        <div class="card">
+            <span class="pill">{% trans "Farm advice" %}</span>
+            <h3>{% trans "AI Farming Chatbot" %}</h3>
+            <p>{% trans "Ask about irrigation, soil health, fertilizer safety, pest prevention, crop planning, and day-to-day farming tasks." %}</p>
+            <a href="{% url 'ai_chatbot' %}">{% trans "Speak with assistant" %}</a>
+        </div>
+
+        <div class="card">
+            <span class="pill">{% trans "Market forecast" %}</span>
+            <h3>{% trans "AI Crop Price Prediction" %}</h3>
+            <p>{% trans "Review historical prices and a simple trend-based estimate for selected crops and markets to support planning decisions." %}</p>
+            <a href="{% url 'crop_price_prediction' %}">{% trans "View price forecast" %}</a>
+        </div>
+    </div>
+
+    <div class="small-note">
+        {% trans "The AI features are optional and will show a clear configuration message if no model or API credentials are set." %}
+    </div>
+</div>
+{% endblock %}

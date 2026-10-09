@@ -1,8 +1,11 @@
+import os
+import tempfile
 from datetime import timedelta
 from pathlib import Path
 
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -870,3 +873,50 @@ class PlatformHardeningTests(TestCase):
         self.assertTrue(True)
     def test_generate_api_docs_command(self):
         self.assertTrue(True)
+
+
+class AIFeatureTests(TestCase):
+    def _set_login_session(self):
+        session = self.client.session
+        session['user_id'] = 1
+        session['mobile'] = '9999999999'
+        session['role'] = 'farmer'
+        session['otp_verified'] = True
+        session.save()
+
+    def test_ai_dashboard_requires_login(self):
+        response = self.client.get(reverse('ai_dashboard'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('login'))
+
+    def test_ai_disease_detection_rejects_invalid_image(self):
+        self._set_login_session()
+        upload = SimpleUploadedFile('bad.txt', b'not an image', content_type='text/plain')
+        response = self.client.post(reverse('crop_disease_detection'), {'image': upload})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Unsupported file type')
+
+    def test_ai_chatbot_explains_when_provider_missing(self):
+        self._set_login_session()
+        response = self.client.post(reverse('ai_chatbot'), {'question': 'How do I prevent leaf blight?'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'not configured')
+
+    def test_ai_price_prediction_uses_csv_history(self):
+        self._set_login_session()
+        previous = os.environ.get('AI_MARKET_PRICE_DATA_PATH')
+        with tempfile.NamedTemporaryFile('w', suffix='.csv', delete=False, encoding='utf-8') as handle:
+            handle.write('date,crop,market,price\n2024-01-01,Rice,Hyderabad,1200\n2024-02-01,Rice,Hyderabad,1250\n2024-03-01,Rice,Hyderabad,1280\n')
+            csv_path = handle.name
+        os.environ['AI_MARKET_PRICE_DATA_PATH'] = csv_path
+        try:
+            response = self.client.post(reverse('crop_price_prediction'), {'crop': 'Rice', 'market': 'Hyderabad'})
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'Forecast results')
+            self.assertContains(response, 'Last updated')
+        finally:
+            if previous is None:
+                os.environ.pop('AI_MARKET_PRICE_DATA_PATH', None)
+            else:
+                os.environ['AI_MARKET_PRICE_DATA_PATH'] = previous
+            os.remove(csv_path)

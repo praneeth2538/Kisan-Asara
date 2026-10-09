@@ -1,0 +1,80 @@
+{% extends 'kisan1/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Crop Disease Detection" %}{% endblock %}
+
+{% block content %}
+<style>
+    body { background: linear-gradient(180deg, #edf7ea 0%, #f7f5eb 100%); font-family: 'Poppins', sans-serif; }
+    .page { max-width: 980px; margin: 40px auto; padding: 24px; }
+    .panel { background: rgba(255,255,255,0.88); border-radius: 22px; padding: 28px; box-shadow: 0 12px 30px rgba(17,71,52,0.08); }
+    .panel h1 { margin-top: 0; color: #133d2a; }
+    .meta { color: #596f62; margin-bottom: 22px; }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    label { display: block; font-weight: 700; color: #183c2c; margin-bottom: 6px; }
+    input[type='file'] { width: 100%; padding: 12px; border: 1px solid #dde5dc; background: #f8faf7; border-radius: 12px; }
+    button { border: none; background: linear-gradient(135deg,#1e7f57,#174b38); color: white; padding: 13px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+    .result-box { margin-top: 28px; padding: 20px; border-radius: 16px; background: #f5faf5; border: 1px solid #dfeedd; }
+    .result-box h3 { margin-top: 0; color: #153d2a; }
+    .status { display: inline-block; padding: 7px 12px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+    .danger { background: #ffeaea; color: #8b2c2c; }
+    .success { background: #e8f7ec; color: #1c5d3a; }
+    .warning { background: #fff4d9; color: #885b00; }
+    .tips { margin-top: 14px; color: #4d6257; line-height: 1.7; }
+    .nav { margin-bottom: 18px; }
+    .nav a { text-decoration: none; color: #184f36; font-weight: 700; }
+    @media (max-width:640px) { .page { padding: 12px; } .panel { padding: 18px; } }
+</style>
+
+<div class="page">
+    <div class="nav"><a href="{% url 'ai_dashboard' %}">← {% trans "AI Dashboard" %}</a></div>
+    <div class="panel">
+        <h1>{% trans "Crop Disease Detection" %}</h1>
+        <div class="meta">{% trans "Upload a clear leaf or plant image and the system will check if a configured model can help identify the issue." %}</div>
+
+        <form method="post" enctype="multipart/form-data" class="form-grid">
+            {% csrf_token %}
+            <div>
+                <label for="image">{% trans "Upload crop image" %}</label>
+                <input id="image" type="file" name="image" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required>
+            </div>
+            <button type="submit">{% trans "Check crop health" %}</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+            <h3>{% trans "Detection result" %}</h3>
+            {% if result.status == 'success' %}
+                <span class="status success">{% trans "Model result" %}</span>
+                <p><strong>{% trans "Prediction" %}:</strong> {{ result.label }}</p>
+                {% if result.confidence is not None %}
+                <p><strong>{% trans "Confidence" %}:</strong> {{ result.confidence|floatformat:2 }}%</p>
+                {% endif %}
+                <p><strong>{% trans "Explanation" %}:</strong> {{ result.explanation }}</p>
+            {% elif result.status == 'unavailable' %}
+                <span class="status warning">{% trans "Not configured" %}</span>
+                <p>{{ result.message }}</p>
+            {% elif result.status == 'error' %}
+                <span class="status danger">{% trans "Validation failed" %}</span>
+                <p>{{ result.message }}</p>
+            {% endif %}
+
+            {% if result.next_steps %}
+            <div class="tips">
+                <strong>{% trans "Next steps" %}:</strong>
+                <ul>
+                    {% for step in result.next_steps %}
+                    <li>{{ step }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            <div class="tips">
+                {% trans "This is not a confirmed diagnosis. Farmers should confirm visual symptoms with a local agricultural expert if the crop looks severely damaged or if the disease is spreading across the field." %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
